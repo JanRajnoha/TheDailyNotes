@@ -1,0 +1,108 @@
+﻿<UserControl
+    x:Class="TheDailyNotes.Modules.Notes.Components.NoteDetail"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TheDailyNotes.Modules.Notes.Components"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="400"
+    d:DesignWidth="400"
+    DataContext="{Binding NoteDetailVM, Source={StaticResource VMLocator}}">
+
+    <UserControl.Resources>
+
+        <Style x:Key="LabelsStyle" 
+               TargetType="TextBlock">
+
+            <Setter Property="Margin" 
+                    Value="0, 20, 0, 0"/>
+
+            <Setter Property="FontSize" 
+                    Value="15"/>
+
+            <Setter Property="Foreground"
+                    Value="{StaticResource DetailPartHeader}"/>
+
+        </Style>
+
+    </UserControl.Resources>
+
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="59"/>
+        </Grid.RowDefinitions>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+
+            <RelativePanel Margin="10">
+                
+                <TextBlock x:Name="Label1"
+                           Text="Note title"
+                           Margin="0"
+                           Style="{StaticResource LabelsStyle}"/>
+
+                <TextBlock x:Name="NoteTitle"
+                           Text="{Binding DetailItem.Name}"
+                           IsTextSelectionEnabled="True"
+                           RelativePanel.Below="Label1"/>
+
+                <TextBlock x:Name="Label2"
+                           Text="Note description"
+                           Style="{StaticResource LabelsStyle}"
+                           RelativePanel.Below="NoteTitle"/>
+
+                <TextBlock x:Name="NoteDescription"
+                           TextWrapping="WrapWholeWords"
+                           TextTrimming="WordEllipsis"
+                           Text="{Binding DetailItem.Description}"
+                           IsTextSelectionEnabled="True"
+                           RelativePanel.Below="Label2"/>
+
+                <TextBlock x:Name="Label3"
+                           Text="Note created"
+                           Style="{StaticResource LabelsStyle}"
+                           RelativePanel.Below="NoteDescription" />
+
+                <TextBlock x:Name="NoteCreated"
+                           Text="{Binding DetailItem.Created}"
+                           IsTextSelectionEnabled="True"
+                           RelativePanel.Below="Label3"/>
+
+                <TextBlock x:Name="Label4"
+                           Text="Note secured"
+                           Style="{StaticResource LabelsStyle}"
+                           RelativePanel.Below="NoteCreated" />
+
+                <TextBlock x:Name="NoteSecured"
+                           Text="{Binding DetailItem.Secured}"
+                           IsTextSelectionEnabled="True"
+                           RelativePanel.Below="Label4"/>
+
+            </RelativePanel>
+            
+        </ScrollViewer>
+
+        <Button x:Name="DetailCancel"
+                Grid.Row="1"
+                Margin="0, 0, 0, 1"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Command="{Binding Close}"
+                ToolTipService.ToolTip="Cancel (Esc)">
+
+            <Button.KeyboardAccelerators>
+                <KeyboardAccelerator Modifiers="None"
+                                         Key="Escape"/>
+            </Button.KeyboardAccelerators>
+
+            <StackPanel Orientation="Horizontal">
+                <SymbolIcon Symbol="Cancel" Margin="0, 0, 10, 0"/>
+                <TextBlock>Close</TextBlock>
+            </StackPanel>
+        </Button>
+
+    </Grid>
+</UserControl>

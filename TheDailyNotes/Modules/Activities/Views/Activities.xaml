@@ -1,0 +1,370 @@
+﻿<Page x:Name="page"
+      x:Class="TheDailyNotes.Modules.Activities.Views.Activities"
+      xmlns:MComp="using:TheDailyNotes.Modules.Activities.Components"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:Tools="using:Microsoft.Toolkit.Uwp.UI.Controls"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:Convert="using:Framework.Classes"
+      xmlns:TDNConvert="using:TheDailyNotes.Classes"
+      xmlns:FControl="using:Framework.Controls"
+      xmlns:Conv="using:Template10.Converters"
+      xmlns:XAML="using:Windows.UI.Xaml.Controls"
+      mc:Ignorable="d"
+      Loaded="Page_Loaded"
+      DataContext="{Binding ActivitiesVM, Source={StaticResource VMLocator}}">
+
+    <Page.Resources>
+        <Convert:NullToVisibility x:Key="NullToVisibility"/>
+        <Convert:NullToBool x:Key="NullToBool"/>
+        <Convert:IntToBool x:Key="IntToBool"/>
+        <TDNConvert:BoolToGridVisibility x:Key="BoolToGridVisibility"/>
+        <Convert:SlavePaneVisibilityConverter x:Key="SlavePaneVisibilityConverter"/>
+        <Convert:SecondaryTileExistConverter x:Key="SecondaryTileExistConverter"/>
+        <Convert:LabelConverter x:Key="LabelConverter"/>
+        <Convert:CompletedTodayConverter x:Key="CompletedTodayConverter"/>
+        <Convert:EnabledTodayConverter x:Key="EnabledToday"/>
+        <TDNConvert:SlaveFrameWidthConverter x:Key="SlaveFrameWidthConverter"/>
+        <Convert:StringConcatConverter x:Key="ShortcutMaker"/>
+        <Convert:InvertVisibilityConverter x:Key="InvertVisibility"/>
+        <Convert:InvertBoolConverter x:Key="InvertBool"/>
+
+        <Conv:ValueWhenConverter x:Key="SlidableItemIsEnabled">
+            <Conv:ValueWhenConverter.When>
+                <XAML:ListViewSelectionMode>Multiple</XAML:ListViewSelectionMode>
+            </Conv:ValueWhenConverter.When>
+            <Conv:ValueWhenConverter.Value>
+                <x:Boolean>False</x:Boolean>
+            </Conv:ValueWhenConverter.Value>
+            <Conv:ValueWhenConverter.Otherwise>
+                <x:Boolean>True</x:Boolean>
+            </Conv:ValueWhenConverter.Otherwise>
+        </Conv:ValueWhenConverter>
+
+        <Conv:ValueWhenConverter x:Key="SelectItemsMode">
+            <Conv:ValueWhenConverter.When>
+                <XAML:ListViewSelectionMode>Multiple</XAML:ListViewSelectionMode>
+            </Conv:ValueWhenConverter.When>
+            <Conv:ValueWhenConverter.Value>
+                <Visibility>Visible</Visibility>
+            </Conv:ValueWhenConverter.Value>
+            <Conv:ValueWhenConverter.Otherwise>
+                <Visibility>Collapsed</Visibility>
+            </Conv:ValueWhenConverter.Otherwise>
+        </Conv:ValueWhenConverter>
+
+        <Conv:ValueWhenConverter x:Key="MasterFrameWidthConverter">
+            <Conv:ValueWhenConverter.When>
+                <x:Boolean>True</x:Boolean>
+            </Conv:ValueWhenConverter.When>
+            <Conv:ValueWhenConverter.Value>
+                <x:Double>0</x:Double>
+            </Conv:ValueWhenConverter.Value>
+            <Conv:ValueWhenConverter.Otherwise>
+                <GridLength>*</GridLength>
+            </Conv:ValueWhenConverter.Otherwise>
+        </Conv:ValueWhenConverter>
+
+    </Page.Resources>
+
+    <RelativePanel Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}">
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="AdaptiveVisualStateGroup">
+
+                <VisualState x:Name="VisualStateNarrow">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource NarrowMinWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+
+                        <Setter Target="SlaveFrame.Width" Value="{Binding PaneVisibility, Converter={StaticResource SlaveFrameWidthConverter}, ConverterParameter=NarrowMinWidth}"/>
+                        <Setter Target="MasterFrame.Width" Value="{Binding PaneVisibility, Converter={StaticResource MasterFrameWidthConverter}}"/>
+                        <Setter Target="SplitLine.Visibility" Value="Collapsed"/>
+                        <Setter Target="SlavePivot.Margin" Value="0 0 0 0"/>
+
+                        <Setter Target="pageHeader.Margin" 
+                                Value="48 0 0 0" />
+
+                    </VisualState.Setters>
+                </VisualState>
+
+                <VisualState x:Name="VisualStateNormal">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource NormalMinWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+
+                        <Setter Target="SlaveFrame.Width" Value="{Binding PaneVisibility, Converter={StaticResource SlaveFrameWidthConverter}, ConverterParameter=NormalMinWidth}"/>
+                        <Setter Target="MasterFrame.Width" Value="*"/>
+                        <Setter Target="SplitLine.Visibility" Value="Visible"/>
+                        <Setter Target="SlavePivot.Margin" Value="10 0 0 0"/>
+
+                        <Setter Target="pageHeader.Margin" 
+                                Value="0 32 0 0" />
+
+                    </VisualState.Setters>
+                </VisualState>
+
+                <VisualState x:Name="VisualStateWide">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource WideMinWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+
+                        <Setter Target="SlaveFrame.Width" Value="{Binding PaneVisibility, Converter={StaticResource SlaveFrameWidthConverter}, ConverterParameter=NormalMinWidth}"/>
+                        <Setter Target="MasterFrame.Width" Value="*"/>
+                        <Setter Target="SplitLine.Visibility" Value="Visible"/>
+                        <Setter Target="SlavePivot.Margin" Value="10 0 0 0"/>
+
+                        <Setter Target="pageHeader.Margin" 
+                                Value="0 32 0 0" />
+
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <CommandBar x:Name="pageHeader"
+                    Style="{ThemeResource PageHeader}">
+
+            <AppBarButton Label="Add Activity"
+                          Icon="Add"
+                          IsEnabled="{Binding Source, Converter={StaticResource NullToBool}, ConverterParameter=not}"
+                          Template="{ThemeResource ShadowAppBarButton}"
+                          Style="{ThemeResource AppBarButtonRevealLabelsOnRightStyle}"
+                          Command="{Binding AddItem}"
+                          ToolTipService.ToolTip="Add Activity (Ctrl + N)">
+
+                <Button.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="Control"
+                                         Key="N"/>
+                </Button.KeyboardAccelerators>
+            </AppBarButton>
+
+            <AppBarButton Label="{Binding Width, ElementName=SlaveFrame, Mode=OneWay, Converter={StaticResource SlavePaneVisibilityConverter}, ConverterParameter=text}"
+                          Icon="{Binding Width, ElementName=SlaveFrame, Mode=OneWay, Converter={StaticResource SlavePaneVisibilityConverter}, ConverterParameter=icon}"
+                          IsEnabled="{Binding PivotPanes.Count, Converter={StaticResource IntToBool}}"
+                          Template="{ThemeResource ShadowAppBarButton}"
+                          Style="{ThemeResource AppBarButtonRevealLabelsOnRightStyle}"
+                          Command="{Binding ChangePaneVisibility}"
+                          ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Self}, Path=Label, Converter={StaticResource ShortcutMaker}, ConverterParameter=(Ctrl + O)}">
+
+                <Button.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="Control"
+                                         Key="O"/>
+                </Button.KeyboardAccelerators>
+            </AppBarButton>
+
+            <AppBarSeparator/>
+
+            <AppBarButton x:Name="SelectItems"
+                          Icon="Bullets"
+                          Template="{ThemeResource ShadowAppBarButton}"
+                          Style="{ThemeResource AppBarButtonRevealLabelsOnRightStyle}"
+                          Label="{Binding ElementName=ActivitiesList, Path=SelectionMode, Converter={StaticResource LabelConverter}}"
+                          Visibility="{Binding ElementName=CancelSelectItems, Path=Visibility, Converter={StaticResource InvertVisibility}}"
+                          IsEnabled="{Binding SelectionMode, Converter={StaticResource SlidableItemIsEnabled}, ElementName=ActivitiesList}"
+                          Command="{Binding ChangeSelectionMode}"
+                          ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Self}, Path=Label}">
+
+                <!--<Button.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="Control"
+                                         Key="X"/>
+                </Button.KeyboardAccelerators>-->
+            </AppBarButton>
+
+            <AppBarButton x:Name="CancelSelectItems"
+                          Icon="Bullets"
+                          Template="{ThemeResource ShadowAppBarButton}"
+                          Style="{ThemeResource AppBarButtonRevealLabelsOnRightStyle}"
+                          Label="{Binding ElementName=ActivitiesList, Path=SelectionMode, Converter={StaticResource LabelConverter}}"
+                          Visibility="{Binding SelectionMode, Converter={StaticResource SelectItemsMode}, ElementName=ActivitiesList}"
+                          IsEnabled="{Binding ElementName=SelectItems, Path=IsEnabled, Converter={StaticResource InvertBool}}"
+                          Command="{Binding ChangeSelectionMode}"
+                          ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Self}, Path=Label, Converter={StaticResource ShortcutMaker}, ConverterParameter=(Esc)}">
+
+                <Button.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="Escape"/>
+                </Button.KeyboardAccelerators>
+            </AppBarButton>
+
+            <AppBarButton x:Name="SelectAllItems"
+                          Label="Select all"
+                          Icon="SelectAll"
+                          Template="{ThemeResource ShadowAppBarButton}"
+                          Style="{ThemeResource AppBarButtonRevealLabelsOnRightStyle}"
+                          Visibility="{Binding SelectionMode, Converter={StaticResource SelectItemsMode}, ElementName=ActivitiesList}"
+                          Click="SelectAllItems_Click"
+                          ToolTipService.ToolTip="Select all (Ctrl + A)">
+
+                <Button.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="Control"
+                                         Key="A"/>
+                </Button.KeyboardAccelerators>
+            </AppBarButton>
+
+            <AppBarButton Label="Share items"
+                          Icon="Share"
+                          Template="{ThemeResource ShadowAppBarButton}"
+                          Style="{ThemeResource AppBarButtonRevealLabelsOnRightStyle}"
+                          Visibility="{Binding SelectionMode, Converter={StaticResource SelectItemsMode}, ElementName=ActivitiesList}"
+                          Command="{Binding ShareItems}"
+                          CommandParameter="{Binding ElementName=ActivitiesList, Mode=TwoWay}"
+                          ToolTipService.ToolTip="Share">
+            </AppBarButton>
+
+            <AppBarButton Label="Delete items"
+                          Icon="Delete"
+                          Template="{ThemeResource ShadowAppBarButton}"
+                          Style="{ThemeResource AppBarButtonRevealLabelsOnRightStyle}"
+                          Visibility="{Binding SelectionMode, Converter={StaticResource SelectItemsMode}, ElementName=ActivitiesList}"
+                          Command="{Binding DeleteItems}"
+                          CommandParameter="{Binding ElementName=ActivitiesList, Mode=TwoWay}"
+                          ToolTipService.ToolTip="Delete (Delete)">
+
+                <Button.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="None"
+                                         Key="Delete"/>
+                </Button.KeyboardAccelerators>
+            </AppBarButton>
+
+            <AppBarSeparator/>
+
+            <AppBarButton Label="{Binding StartTileAdded, Converter={StaticResource SecondaryTileExistConverter}, ConverterParameter=text}"
+                          Icon="{Binding StartTileAdded, Converter={StaticResource SecondaryTileExistConverter}, ConverterParameter=icon}"
+                          Template="{ThemeResource ShadowAppBarButton}"
+                          Style="{ThemeResource AppBarButtonRevealLabelsOnRightStyle}"
+                          Command="{Binding AddStartTile}"/>
+
+            <CommandBar.Content>
+
+                <TextBlock x:Name="HeaderText"
+                           Text="Activities"
+                           Style="{ThemeResource PageHeaderText}"/>
+
+            </CommandBar.Content>
+
+        </CommandBar>
+
+        <Tools:DropShadowPanel Style="{ThemeResource ShadowContent}"
+                               HorizontalContentAlignment="Stretch" 
+                               VerticalContentAlignment="Stretch"
+                               RelativePanel.AlignBottomWithPanel="True" 
+                               RelativePanel.Below="pageHeader"
+                               RelativePanel.AlignRightWithPanel="True"
+                               RelativePanel.AlignLeftWithPanel="True">
+
+            <Grid Style="{ThemeResource ContentGrid}">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition x:Name="MasterFrame"
+                                  Width="{Binding MasterFrame, Mode=TwoWay}"/>
+
+                    <ColumnDefinition x:Name="SlaveFrame"
+                                  Width="{Binding PaneVisibility, Converter={StaticResource BoolToGridVisibility}}"/>
+                    <!--Width="{Binding PaneVisibility, Converter={StaticResource BoolToGridVisibility}}"/>-->
+                </Grid.ColumnDefinitions>
+
+                <ListView x:Name="ActivitiesList"
+                      Margin="0 10 0 0"
+                      HorizontalAlignment="Stretch"
+                      SelectionMode="{Binding ListSelectionMode}"
+                      ItemsSource="{Binding DataContext.Source, ElementName=page, Mode=OneWay, UpdateSourceTrigger=Explicit}">
+
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+
+                            <Setter Property="HorizontalContentAlignment"
+                                Value="Stretch"/>
+
+                            <Setter Property="Margin"
+                                Value="15, 5, 15, 5"/>
+
+                            <Setter Property="Padding"
+                                Value="0"/>
+
+                        </Style>
+                    </ListView.ItemContainerStyle>
+
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Tools:SlidableListItem HorizontalAlignment="Stretch"
+                                                    ActivationWidth="100"
+                                                    IsOffsetLimited="True"
+                                                    MouseSlidingEnabled="True"
+                                                    Margin="0 10 0 0"
+                                                    IsPointerReleasedOnSwipingHandled="False"
+                                                    IsEnabled="{Binding SelectionMode, Converter={StaticResource SlidableItemIsEnabled}, ElementName=ActivitiesList}"
+                                                    
+                                                    RightIcon="Delete" 
+                                                    RightLabel="Delete"
+                                                    RightBackground="#60F71111"
+                                                    RightForeground ="White"
+                                                    RightCommand="{Binding Remove}"
+                                                    RightCommandParameter="{Binding}"
+                                                    IsRightCommandEnabled="{Binding DataContext.EnableSlideControls, ElementName=page, Mode=OneWay}"
+                                                    
+                                                    LeftIcon="{Binding Dates, Converter={StaticResource CompletedTodayConverter}, ConverterParameter=icon, Mode=OneWay, UpdateSourceTrigger=Explicit}"
+                                                    LeftLabel="{Binding Dates, Converter={StaticResource CompletedTodayConverter}, ConverterParameter=text, Mode=OneWay, UpdateSourceTrigger=Explicit}"
+                                                    LeftBackground="{Binding Dates, Converter={StaticResource CompletedTodayConverter}, ConverterParameter=slider, Mode=OneWay, UpdateSourceTrigger=Explicit}"
+                                                    LeftForeground ="White"
+                                                    LeftCommand="{Binding DataContext.CompleteCommand, ElementName=page, Mode=OneWay}"
+                                                    LeftCommandParameter="{Binding}"
+                                                    IsLeftCommandEnabled="{Binding Converter={StaticResource EnabledToday}, ConverterParameter={Binding Neverend}, Mode=OneWay, UpdateSourceTrigger=Explicit}">
+
+                                <MComp:ActivityProgress Data="{Binding}"
+                                                        ViewModel="{Binding ActivityProgressVM, Source={StaticResource VMLocator}}"/>
+
+                            </Tools:SlidableListItem>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+
+                </ListView>
+
+                <FControl:InAppNotifyMVVM x:Name="InAppNotify"
+                                          ShowDismissButton="True"
+                                          Mess="{Binding Messenger, Mode=OneWay}"/>
+
+                <StackPanel HorizontalAlignment="Center" 
+                        VerticalAlignment="Center"
+                        Visibility="{Binding Source, Converter={StaticResource NullToVisibility}, ConverterParameter=not}">
+
+                    <ProgressRing Height="75"
+                              Width="75"
+                              IsActive="True"
+                              Margin="15"/>
+
+                    <TextBlock Text="Please wait. Loading data."
+                           FontSize="21"/>
+
+                </StackPanel>
+
+                <Grid x:Name="ActivitySlave"
+                      Grid.Column="1">
+
+                    <Rectangle x:Name="SplitLine"
+                               Margin="0 10 0 10"
+                               HorizontalAlignment="Left"                                       
+                               Width="1"
+                               StrokeThickness="0.5"
+                               Stroke="Gray"
+                               VerticalAlignment="Stretch"/>
+
+                        <Pivot x:Name="SlavePivot"
+                                   Margin="10 0 0 0"
+                                   HorizontalContentAlignment="Stretch"
+                                   ItemsSource="{Binding PivotPanes, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                   HeaderFocusVisualPlacement="ItemHeaders"/>
+                        <!--Background="{ThemeResource SystemControlChromeLowAcrylicWindowBrush}"-->
+
+                </Grid>
+
+            </Grid>
+
+        </Tools:DropShadowPanel>
+
+    </RelativePanel>
+
+</Page>

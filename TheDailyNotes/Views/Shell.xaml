@@ -1,0 +1,158 @@
+<Page x:Class="TheDailyNotes.Views.Shell"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:FControls="using:Framework.Controls"
+      xmlns:appmodel="using:Windows.ApplicationModel"
+      xmlns:vm="using:TheDailyNotes.ViewModels"
+      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+      mc:Ignorable="d" Loaded="Page_Loaded">
+
+    <Page.DataContext>
+
+        <vm:SettingsPartViewModel x:Name="SetSer"/>
+
+    </Page.DataContext>
+
+    <!--<Grid Background="{ThemeResource AcrylicMedium}">-->
+        <!--<Grid Padding="0 32 0 0">-->
+
+    <Grid>
+        <FControls:NavigationView x:Name="NavView"
+                                  Loaded="NavView_Loaded"
+                                  ItemInvoked="NavView_ItemInvoked"
+                                  SelectionChanged="NavView_SelectionChanged"
+                                  AlwaysShowHeader="False"
+                                  ShowAd="Visible"
+                                  CompactModeThresholdWidth="{StaticResource NormalMinWidth}"
+                                  ExpandedModeThresholdWidth="{StaticResource WideMinWidth}">
+
+            <NavigationView.MenuItems>
+
+                <!--Home-->
+                <NavigationViewItem Content="Home" 
+                                    Tag="home">
+
+                    <NavigationViewItem.Icon>
+
+                        <FontIcon Glyph="&#xE10F;"/>
+
+                    </NavigationViewItem.Icon>
+
+                </NavigationViewItem>
+
+                <!--Activities-->
+                <NavigationViewItem Icon="Bullets" 
+                                    Content="Activities"
+                                    Tag="activities">
+
+                </NavigationViewItem>
+
+                <!--Notes-->
+                <NavigationViewItem Icon="Message" 
+                                    Content="Notes"
+                                    Tag="notes"
+                                    Visibility="Visible">
+
+                </NavigationViewItem>
+
+                <!--To-Do-->
+                <NavigationViewItem Icon="AllApps" 
+                                    Content="To - Dos"
+                                    Tag="todo"
+                                    Visibility="Visible"/>
+
+                <!--Feedback-->
+                <NavigationViewItem x:Name="FeedbackButton"
+                                    Content="Feedback"                                 
+                                    Tag="feedback">
+
+                    <NavigationViewItem.Icon>
+
+                        <FontIcon Glyph="&#xED15;"/>
+
+                    </NavigationViewItem.Icon>
+
+                </NavigationViewItem>
+
+            </NavigationView.MenuItems>
+
+            <!--<NavigationView.AutoSuggestBox>
+            <AutoSuggestBox x:Name="ASB" QueryIcon="Find"/>
+        </NavigationView.AutoSuggestBox>-->
+
+            <!--<NavigationView.HeaderTemplate>
+            <DataTemplate>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource TitleTextBlockStyle}"
+                           FontSize="28"
+                           VerticalAlignment="Center"
+                           Margin="12,0"
+                           Text="Welcome"/>
+                    <CommandBar Grid.Column="1"
+                            HorizontalAlignment="Right"
+                            DefaultLabelPosition="Right"
+                            Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
+                        <AppBarButton Label="Refresh" Icon="Refresh"/>
+                        <AppBarButton Label="Import" Icon="Import"/>
+                    </CommandBar>
+                </Grid>
+            </DataTemplate>
+        </NavigationView.HeaderTemplate>-->
+
+            <NavigationView.HeaderTemplate>
+                <DataTemplate>
+                    <Grid Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}"
+                          Height="32">
+                    </Grid>
+                </DataTemplate>
+            </NavigationView.HeaderTemplate>
+
+            <NavigationView.PaneFooter>
+
+                <NavigationViewItem x:Name="LoggingButton"
+                                    Content="Log in" 
+                                    Icon="Contact"
+                                    Tag="login"
+                                    IsEnabled="{x:Bind SetSer.UseHelloSecurity}"
+                                    Tapped="{x:Bind SetSer.LogButton_Tapped}"
+                                    ToolTipService.ToolTip="Log (Ctrl + L)">
+
+                    <NavigationViewItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Control"
+                                         Key="L"/>
+                    </NavigationViewItem.KeyboardAccelerators>
+
+                </NavigationViewItem>
+
+            </NavigationView.PaneFooter>
+
+            <Frame x:Name="ContentFrame">
+
+                <Frame.ContentTransitions>
+                    <TransitionCollection>
+                        <NavigationThemeTransition/>
+                    </TransitionCollection>
+                </Frame.ContentTransitions>
+
+            </Frame>
+
+        </FControls:NavigationView>
+
+        <TextBlock x:Name="AppTitle" 
+                   Style="{StaticResource CaptionTextBlockStyle}" 
+                   Text="{x:Bind SetSer.AppDisplayName}" 
+                   IsHitTestVisible="False"
+                   VerticalAlignment="Top"
+                   HorizontalAlignment="Center"
+                   Visibility="Visible"
+                   Height="15"/>
+    </Grid>
+
+</Page>
+

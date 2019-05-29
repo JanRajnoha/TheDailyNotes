@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<ProjectGuidesConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ProjectItemGuides>
+    <ProjectItemGuide TargetFile="Components\ActivityItem.xaml">
+      <GuideModels>
+        <GuideModel>
+          <Guides>
+            <Guide Alignment="Top" Position="50" />
+            <Guide Alignment="Left" Position="308" />
+            <Guide Alignment="Top" Position="35" />
+            <Guide Alignment="Top" Position="65" />
+            <Guide Alignment="Left" Position="293" />
+            <Guide Alignment="Left" Position="323" />
+          </Guides>
+        </GuideModel>
+      </GuideModels>
+    </ProjectItemGuide>
+    <ProjectItemGuide TargetFile="Modules\Activities\Components\ActivityProgress.xaml">
+      <GuideModels>
+        <GuideModel>
+          <Guides>
+            <Guide Alignment="Top" Position="70" />
+            <Guide Alignment="Left" Position="293" />
+            <Guide Alignment="Left" Position="323" />
+            <Guide Alignment="Top" Position="99" />
+            <Guide Alignment="Top" Position="85" />
+            <Guide Alignment="Left" Position="308" />
+          </Guides>
+        </GuideModel>
+      </GuideModels>
+    </ProjectItemGuide>
+  </ProjectItemGuides>
+</ProjectGuidesConfiguration>

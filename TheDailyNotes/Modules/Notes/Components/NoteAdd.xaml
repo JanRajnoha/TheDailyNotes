@@ -1,0 +1,168 @@
+﻿<UserControl x:Class="TheDailyNotes.Modules.Notes.Components.NoteAdd"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:TheDailyNotes.Modules.Notes.Components"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:Conv="using:Template10.Converters"
+             xmlns:Convert="using:Framework.Classes"
+             xmlns:TDNConvert="using:TheDailyNotes.Classes"
+             xmlns:UI="using:Microsoft.Advertising.WinRT.UI"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignHeight="400"
+             d:DesignWidth="400"
+             DataContext="{Binding NoteAddVM, Source={StaticResource VMLocator}}">
+
+    <UserControl.Resources>
+        <Convert:ErrorMessageConverter x:Key="NoteAddErrorMessage"/>
+        <Convert:BoolToVisibility x:Key="BoolToVisibility"/>
+        <Convert:IdConverter x:Key="IdConverter"/>
+        <Convert:VisibilityToGridLength x:Key="AddMoreButtonVisibility"/>
+        <TDNConvert:AddCloseVisibility x:Key="AddCloseVisibility"/>
+        <Convert:StringConcatConverter x:Key="ShortcutMaker"/>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="{Binding ElementName=AddClose, Path=Visibility, Converter={StaticResource AddCloseVisibility}}"/>
+        </Grid.RowDefinitions>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                      VerticalScrollMode="Enabled"
+                      Grid.Row="0">
+
+            <RelativePanel>
+
+                <TextBox x:Name="NoteName"
+                         Margin="10"
+                         TextWrapping="Wrap" 
+                         RelativePanel.AlignLeftWithPanel="True"
+                         RelativePanel.AlignRightWithPanel="True"
+                         Text="{Binding DetailItem.Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                         PlaceholderText="Insert note title"/>
+
+                <TextBox x:Name="NoteDescription"                        
+                         Margin="10"                              
+                         TextWrapping="Wrap" 
+                         AcceptsReturn="True"
+                         RelativePanel.Below="NoteName"
+                         RelativePanel.AlignLeftWithPanel="True"
+                         RelativePanel.AlignRightWithPanel="True"
+                         PlaceholderText="Insert note description" 
+                         Text="{Binding DetailItem.Description, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                         Height="250"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+                
+                <CheckBox x:Name="NoteSecure"
+                          Margin="10"
+                          IsChecked="{Binding DetailItem.Secured, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                          Content="Secured note"
+                          RelativePanel.Below="NoteDescription"
+                          Visibility="{Binding SecBtnVisibility}"/>
+
+                <TextBlock x:Name="NoteInputError" 
+                           Text="{Binding ErrorMessage, Converter={StaticResource NoteAddErrorMessage}}"
+                           Margin="10"
+                           Foreground="Red"
+                           Visibility="{Binding ErrorVisible, Converter={StaticResource BoolToVisibility}}"
+                           RelativePanel.Below="NoteSecure"/>
+
+                <UI:AdControl ApplicationId="9nblggh69j83"
+                              AdUnitId="1100012863"
+                              HorizontalAlignment="Left"
+                              Height="250"
+                              VerticalAlignment="Top"
+                              Width="300"
+                              Margin="10"
+                              Visibility="{Binding AdVisibility}"
+                              RelativePanel.Below="NoteInputError"/>
+
+
+            </RelativePanel>
+            
+        </ScrollViewer>
+        
+        <Grid Grid.Row="1">
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition x:Name="AddCloseRow"
+                               Height="{Binding ElementName=AddClose, Path=Visibility, Converter={StaticResource AddMoreButtonVisibility}}"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Button x:Name="AddClose" 
+                    Grid.Row="0"
+                    Grid.ColumnSpan="3"
+                    Margin="0, 0, 0, 1"
+                    FontSize="15"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Visibility="{Binding DetailItem.ID, Converter={StaticResource IdConverter}, ConverterParameter=visibility}"
+                    Command="{Binding SaveNoteClose, UpdateSourceTrigger=PropertyChanged}"
+                    CommandParameter="{Binding DetailItem}"
+                    ToolTipService.ToolTip="Add and close (Ctrl + Shift + S)">
+
+                <Button.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="Control,Shift"
+                                         Key="S"/>
+                </Button.KeyboardAccelerators>
+
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon Symbol="SaveLocal" Margin="0, 0, 10, 0"/>
+                    <TextBlock>Add and close</TextBlock>
+                </StackPanel>
+
+            </Button>
+
+            <Button x:Name="Add" 
+                    Margin="0, 1, 1, 1"
+                    Grid.Row="1"
+                    FontSize="15"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    IsEnabled="True"
+                    Command="{Binding SaveNote, UpdateSourceTrigger=PropertyChanged}"
+                    CommandParameter="{Binding DetailItem}"
+                    ToolTipService.ToolTip="{Binding Path=Text, ElementName=AddText, Converter={StaticResource ShortcutMaker}, ConverterParameter=(Ctrl + S)}">
+
+                <Button.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="Control"
+                                         Key="S"/>
+                </Button.KeyboardAccelerators>
+
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon Symbol="Save" Margin="0, 0, 10, 0"/>
+                    <TextBlock x:Name="AddText"
+                               Text="{Binding DetailItem.ID, Converter={StaticResource IdConverter}, ConverterParameter=text}"/>
+                </StackPanel>
+            </Button>
+
+            <Button x:Name="Cancel"
+                    Grid.Column="2"                            
+                    Margin="1, 1, 0, 1"
+                    Grid.Row="1"
+                    FontSize="15"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Command="{Binding Close, UpdateSourceTrigger=PropertyChanged}"
+                    ToolTipService.ToolTip="Cancel (Esc)">
+
+                <Button.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="None"
+                                         Key="Escape"/>
+                </Button.KeyboardAccelerators>
+
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon Symbol="Cancel" Margin="0, 0, 10, 0"/>
+                    <TextBlock>Cancel</TextBlock>
+                </StackPanel>
+            </Button>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,496 @@
+﻿<UserControl x:Name="userControl"
+             x:Class="TheDailyNotes.Modules.Activities.Components.ActivityProgress"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:FControls="using:Framework.Controls"
+             xmlns:Convert="using:Framework.Classes"
+             mc:Ignorable="d"
+             d:DesignHeight="220"
+             d:DesignWidth="400">
+
+    <UserControl.Resources>
+        <Convert:EndTaskBaseItemColorConverter x:Key="EndItemColor"/> 
+        <Convert:EnabledTodayConverter x:Key="EnabledToday"/>
+        <Convert:ContainsTodayConverter x:Key="ContainsTodayConverter"/>
+        <Convert:CurrentStateConverter x:Key="CurrentState"/>
+        <Convert:SecuredToWidth x:Key="SecuredToWidth"/>
+
+        <Storyboard x:Name="ActProgAnim">
+
+            <DoubleAnimation x:Name="GreenGradiAnim" 
+                             Storyboard.TargetProperty="Offset" 
+                             Storyboard.TargetName="GreenGradi"
+                             Duration="0:0:1"
+                             From="1"
+                             To="0"
+                             EnableDependentAnimation="True"/>
+
+            <DoubleAnimation x:Name="WhiteGradiAnim" 
+                             Storyboard.TargetProperty="Offset" 
+                             Storyboard.TargetName="WhiteGradi"
+                             Duration="0:0:1"
+                             From="1"
+                             To="0"
+                             EnableDependentAnimation="True"/>
+
+        </Storyboard>
+
+        <Storyboard x:Name="ShowDesc">
+
+            <DoubleAnimation Duration="0:0:0.4" 
+                             To="-1"
+                             Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleY)" 
+                             Storyboard.TargetName="MoreButCont" 
+                             d:IsOptimized="True"/>
+
+            <DoubleAnimation x:Name="ShowDescPartButton" 
+                             Storyboard.TargetProperty="ButtonRowHeight" 
+                             Storyboard.TargetName="userControl"
+                             Duration="0:0:0.4"
+                             From="0"
+                             To="60"
+                             EnableDependentAnimation="True"/>
+
+            <DoubleAnimation x:Name="ShowDescPartDetail" 
+                             Storyboard.TargetProperty="DetailRowHeight" 
+                             Storyboard.TargetName="userControl"
+                             Duration="0:0:0.4"
+                             EnableDependentAnimation="True"/>
+
+            <DoubleAnimation x:Name="ShowDescPartMain" 
+                             Storyboard.TargetProperty="MainRowHeight" 
+                             Storyboard.TargetName="userControl"
+                             From="-1"
+                             Duration="0:0:0.4"
+                             EnableDependentAnimation="True"/>
+
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Margin)" 
+                                           Storyboard.TargetName="MoreButCont">
+
+                <DiscreteObjectKeyFrame KeyTime="0">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Thickness>0,0,0,2</Thickness>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.1">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Thickness>0,0,0,1</Thickness>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.2">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Thickness>0</Thickness>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.3">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Thickness>0,0,0,-1</Thickness>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.4">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Thickness>0,0,0,-2</Thickness>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+
+            </ObjectAnimationUsingKeyFrames>
+
+        </Storyboard>
+
+        <Storyboard x:Name="HideDesc">
+
+            <DoubleAnimation Duration="0:0:0.4"
+                             To="1" 
+                             Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleY)"
+                             Storyboard.TargetName="MoreButCont"
+                             d:IsOptimized="True"/>
+
+            <DoubleAnimation x:Name="HideDescPartButton" 
+                             Storyboard.TargetProperty="ButtonRowHeight" 
+                             Storyboard.TargetName="userControl"
+                             Duration="0:0:0.4"
+                             From="60"
+                             To="0"
+                             EnableDependentAnimation="True"/>
+
+            <DoubleAnimation x:Name="HideDescPartDetail" 
+                             Storyboard.TargetProperty="DetailRowHeight" 
+                             Storyboard.TargetName="userControl"
+                             Duration="0:0:0.4"
+                             EnableDependentAnimation="True"/>
+
+            <DoubleAnimation x:Name="HideDescPartMain" 
+                             Storyboard.TargetProperty="MainRowHeight" 
+                             Storyboard.TargetName="userControl"
+                             Duration="0:0:0.4"
+                             To="48"
+                             EnableDependentAnimation="True"/>
+
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Margin)" 
+                                           Storyboard.TargetName="MoreButCont">
+
+                <DiscreteObjectKeyFrame KeyTime="0">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Thickness>0,0,0,-2</Thickness>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.1">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Thickness>0,0,0,-1</Thickness>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.2">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Thickness>0,0,0,0</Thickness>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.3">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Thickness>0,0,0,1</Thickness>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.4">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Thickness>0,0,0,2</Thickness>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+
+            </ObjectAnimationUsingKeyFrames>
+
+        </Storyboard>
+
+        <Storyboard x:Name="HideMoreDesc">
+
+            <DoubleAnimation Duration="0:0:0.4"
+                             To="1" 
+                             Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleY)"
+                             Storyboard.TargetName="ShowMoreButCont"
+                             d:IsOptimized="True"/>
+
+            <DoubleAnimation x:Name="HideMoreDescPartDetail" 
+                             Storyboard.TargetProperty="DetailRowHeight" 
+                             Storyboard.TargetName="userControl"
+                             Duration="0:0:0.4"
+                             EnableDependentAnimation="True"/>
+
+        </Storyboard>
+
+        <Storyboard x:Name="ShowMoreDesc">
+
+            <DoubleAnimation Duration="0:0:0.4"
+                             To="-1" 
+                             Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleY)"
+                             Storyboard.TargetName="ShowMoreButCont"
+                             d:IsOptimized="True"/>
+
+            <DoubleAnimation x:Name="ShowMoreDescPartDetail" 
+                             Storyboard.TargetProperty="DetailRowHeight" 
+                             Storyboard.TargetName="userControl"
+                             Duration="0:0:0.4"
+                             EnableDependentAnimation="True"/>
+
+        </Storyboard>
+
+    </UserControl.Resources>
+
+    <!--<Tools:DropShadowPanel BlurRadius="15"
+                           ShadowOpacity=".5"
+                           OffsetX=".0"
+                           OffsetY=".0"
+                           HorizontalContentAlignment="Stretch" 
+                           VerticalContentAlignment="Stretch">-->
+
+    <Grid x:Name="Container"
+          Height="100"
+          MaxHeight="400"
+          RightTapped="Container_RightTapped">
+        <!--Background="{ThemeResource AcrylicInAppSoft}"-->
+        <!--60 pro minimalistický, 100 pro normální-->
+
+        <Grid.RowDefinitions>
+            <RowDefinition x:Name="MainPart"
+                           Height="48"/>
+
+            <RowDefinition x:Name="DetailPart"
+                           Height="40"/>
+
+            <RowDefinition x:Name="ButtonPart"
+                           Height="0"/>
+
+        </Grid.RowDefinitions>
+
+        <FlyoutBase.AttachedFlyout>
+            <MenuFlyout>
+                <MenuFlyoutItem Text="Detail"
+                                Icon="FullScreen"
+                                Command="{x:Bind ViewModel.DetailCommand, Mode=OneWay}"
+                                CommandParameter="{x:Bind Data, Mode=OneWay}"/>
+
+                <MenuFlyoutItem Text="{x:Bind CompActStr, Mode=OneWay}" 
+                                Icon="Accept"
+                                IsEnabled="{x:Bind Data, Converter={StaticResource EnabledToday}, Mode=OneWay}"
+                                Command="{x:Bind ViewModel.CompleteCommand, Mode=OneWay}"
+                                CommandParameter="{x:Bind Data, Mode=OneWay}"/>
+
+                <MenuFlyoutItem Text="Edit"
+                                Icon="Edit"
+                                Command="{x:Bind ViewModel.EditCommand, Mode=OneWay}"
+                                CommandParameter="{x:Bind Data, Mode=OneWay}"/>
+
+                <MenuFlyoutItem Text="Share"
+                                Icon="Share"
+                                Command="{x:Bind ViewModel.ShareCommand, Mode=OneWay}"
+                                CommandParameter="{x:Bind Data, Mode=OneWay}"/>
+
+                <MenuFlyoutItem Text="Remove"
+                                Icon="Delete"
+                                Command="{x:Bind Data.Remove, Mode=OneWay}"
+                                CommandParameter="{x:Bind Data, Mode=OneWay}"/>
+            </MenuFlyout>
+        </FlyoutBase.AttachedFlyout>
+
+        <Rectangle x:Name="rectangle"
+                   Margin="0 0 0 0" 
+                   Grid.RowSpan="3"
+                   VerticalAlignment="Bottom"
+                   Height="3">
+
+            <Rectangle.Fill>
+
+                <LinearGradientBrush EndPoint="0,0"
+                                     StartPoint="1,0">
+
+                    <GradientStop Color="#6002C702"
+                                  Offset="1"/>
+
+                    <GradientStop Color="{Binding Data, Converter={StaticResource EndItemColor}, ElementName=userControl, Mode=OneWay}"/>
+
+                    <GradientStop x:Name="WhiteGradi"
+                                  Color="{Binding Data, Converter={StaticResource EndItemColor}, ElementName=userControl, Mode=OneWay}"
+                                  Offset="0.999"/>
+                    <!--Offset="{Binding WhiteGradiOff, ElementName=userControl, Mode=OneWay}"/>-->
+
+                    <GradientStop x:Name="GreenGradi"
+                                  Color="#6002C702"
+                                  Offset="1"/>
+                    <!--Offset="{Binding GreenGradiOff, ElementName=userControl, Mode=OneWay}"/>-->
+
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+
+        <Grid Margin="0 0 0 0">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="75"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0" >
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition x:Name="MoreColumn"
+                                      Width="35"/>
+
+                </Grid.ColumnDefinitions>
+
+                <Grid Margin="0 -4 0 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="{Binding Data.Secured, Converter={StaticResource SecuredToWidth}, ElementName=userControl, Mode=OneWay}"/>
+                        <ColumnDefinition Width="0"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock FontFamily="Segoe MDL2 Assets"
+                               Text="&#xE131;"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Margin="0 -12 0 0"
+                               FontSize="25"
+                               ToolTipService.ToolTip="This activity is secured"/>
+
+                    <TextBlock FontFamily="Segoe MDL2 Assets"
+                               Text="&#xE716;"
+                               Grid.Column="1"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Margin="0 -12 0 0"
+                               FontSize="25"
+                               ToolTipService.ToolTip="This activity is shared"/>
+
+                    <TextBlock x:Name="ItemTitle"
+                               Grid.Column="2"
+                               Text="{Binding Data.Name, ElementName=userControl, Mode=OneWay}"
+                               Margin="10 4 0 -12"
+                               FontSize="25"
+                               MinHeight="34"
+                               TextWrapping="WrapWholeWords"
+                               TextTrimming="WordEllipsis"/>
+                </Grid>
+
+                <FControls:CircleButton x:Name="ShowMore"
+                                        Height="{Binding Path=Width, ElementName=ShowMore}"
+                                        Width="30"
+                                        FontSize="15"
+                                        Margin="0 4 0 0"
+                                        Grid.Column="1"
+                                        ContentColor="{Binding Path=Foreground, ElementName=ItemTitle}"
+                                        HorizontalAlignment="Center"
+                                        Click="ShowMore_Click"
+                                        VerticalAlignment="Top">
+                    <Grid>
+
+                        <ContentPresenter x:Name="MoreButCont"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          RenderTransformOrigin="0.5,0.5">
+
+                            <FontIcon FontFamily="Segoe MDL2 Assets"
+                                      FontSize="15"
+                                      Glyph="&#xE74B;" />
+
+                            <ContentPresenter.RenderTransform>
+                                <CompositeTransform/>
+                            </ContentPresenter.RenderTransform>
+
+                        </ContentPresenter>
+                        <!--˅˄-->
+
+                    </Grid>
+
+                </FControls:CircleButton>
+
+            </Grid>
+
+            <FControls:CircleButton x:Name="CompleteActivity"
+                                    Grid.Column="1"
+                                    FontFamily="Segoe MDL2 Assets"
+                                    FontSize="20"
+                                    Height="{Binding Path=Width, ElementName=CompleteActivity}"
+                                    Width="41" 
+                                    VerticalAlignment="Top"
+                                    SwitchButton="True"
+                                    FillColor="{Binding Data, Converter={StaticResource CurrentState}, ElementName=userControl, Mode=OneWay}"
+                                    ContentColor="{Binding Path=Foreground, ElementName=ItemTitle}"
+                                    IsOn="{Binding Data.Dates, ElementName=userControl, Mode=OneWay, Converter={StaticResource ContainsTodayConverter}}"
+                                    Command="{Binding ViewModel.CompleteCommand, ElementName=userControl, Mode=OneWay}"
+                                    CommandParameter="{Binding Data, ElementName=userControl, Mode=OneWay}"
+                                    HorizontalAlignment="Center"
+                                    IsEnabled="{Binding Data, Converter={StaticResource EnabledToday}, ElementName=userControl, Mode=OneWay}"
+                                    Margin="15 -2 15 0"                                    
+                                    ToolTipService.ToolTip="{x:Bind CompActStr, Mode=OneWay}">
+
+                <Grid>
+                    <ContentPresenter HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      x:Name="CompleteActivityContent"
+                                      Content=""/>
+                </Grid>
+            </FControls:CircleButton>
+
+        </Grid>
+
+        <TextBlock x:Name="ActivityDescription"
+                   Grid.Row="1"
+                   Visibility="Visible"
+                   Text="{Binding Data.Description, ElementName=userControl, Mode=OneWay}"
+                   Margin="10 5 10 5"
+                   FontSize="18"
+                   TextWrapping="WrapWholeWords"
+                   TextTrimming="WordEllipsis"
+                   VerticalAlignment="Stretch"
+                   IsTextSelectionEnabled="{Binding ViewModel.EnableTextSelect, ElementName=userControl, Mode=OneWay}"/>
+
+        <FControls:CircleButton x:Name="ShowMoreDescription"
+                                Visibility="Collapsed"
+                                Height="{Binding Path=Width, ElementName=ShowMore}"
+                                Width="30"
+                                Margin="0 0 5 5"
+                                HorizontalAlignment="Right" 
+                                VerticalAlignment="Bottom"
+                                Grid.Row="1" 
+                                Click="ShowMoreDescription_Click"
+                                ContentColor="{Binding Path=Foreground, ElementName=ItemTitle}">
+            <Grid>
+
+                <ContentPresenter x:Name="ShowMoreButCont"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  RenderTransformOrigin="0.5,0.5">
+
+                    <FontIcon FontFamily="Segoe MDL2 Assets"
+                              FontSize="15"
+                              Glyph="&#xE74B;" />
+
+                    <ContentPresenter.RenderTransform>
+                        <CompositeTransform/>
+                    </ContentPresenter.RenderTransform>
+
+                </ContentPresenter>
+                <!--˅˄-->
+
+            </Grid>
+
+        </FControls:CircleButton>
+
+        <Grid Grid.Row="2">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Button x:Name="Detail" 
+                    Content="Detail" 
+                    HorizontalAlignment="Stretch" 
+                    Margin="10"
+                    Command="{Binding ViewModel.DetailCommand, ElementName=userControl, Mode=OneWay}"
+                    CommandParameter="{Binding Data, ElementName=userControl, Mode=OneWay}"
+                    VerticalAlignment="Stretch"/>
+
+            <Button x:Name="Edit" 
+                    Content="Edit"
+                    HorizontalAlignment="Stretch" 
+                    Margin="10" 
+                    Command="{Binding ViewModel.EditCommand, ElementName=userControl, Mode=OneWay}"
+                    CommandParameter="{Binding Data, ElementName=userControl, Mode=OneWay}"
+                    VerticalAlignment="Stretch" 
+                    Grid.Column="1"/>
+
+            <Button x:Name="Share"
+                    Content="Share"
+                    HorizontalAlignment="Stretch" 
+                    Margin="10" 
+                    Command="{Binding ViewModel.ShareCommand, ElementName=userControl, Mode=OneWay}"
+                    CommandParameter="{Binding Data, ElementName=userControl, Mode=OneWay}"
+                    VerticalAlignment="Stretch"
+                    Grid.Column="2"/>
+
+            <Button x:Name="Remove"
+                    Content="Remove"
+                    HorizontalAlignment="Stretch" 
+                    Margin="10" 
+                    Command="{Binding Data.Remove, ElementName=userControl, Mode=OneWay}"
+                    CommandParameter="{Binding Data, ElementName=userControl, Mode=OneWay}"
+                    VerticalAlignment="Stretch"
+                    Grid.Column="3"/>
+
+        </Grid>
+
+    </Grid>
+    <!--</Tools:DropShadowPanel>-->
+
+</UserControl>
